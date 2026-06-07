@@ -44,6 +44,9 @@ const ALL_COUNTRIES = [
 // ─── Web3Forms Access Key ───────────────────────────────────────────────────
 const WEB3FORMS_KEY = '5c22c4f3-fff5-4794-9364-dd079fac4c8a';
 
+// ─── Google Sheets Web App URL ────────────────────────────────────────────────
+const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbwvgeLVkrIJUk6mouct0B_c2K8podWDJovqMte01ANHLT1JyrLeKFo9V-HZBuZ9P-Lr/exec';
+
 interface WaitlistFormProps {
   id?: string;
 }
@@ -95,8 +98,16 @@ export default function WaitlistForm({ id = 'waitlist' }: WaitlistFormProps) {
     setErrorMessage('');
 
     try {
-      // ── Submit to Web3Forms ──────────────────────────────────────────────
-      const response = await fetch('https://api.web3forms.com/submit', {
+      // ── Compute queue details early (needed for Sheet payload) ───────────
+      let hash = 0;
+      for (let i = 0; i < email.length; i++) {
+        hash = email.charCodeAt(i) + ((hash << 5) - hash);
+      }
+      const derivedPos = 10000 + Math.abs(hash % 4500);
+      const derivedTicket = `PRD-${Math.abs(hash % 90000 + 10000)}`;
+
+      // ── 1. Submit to Web3Forms (email notification) ───────────────────────
+      const web3Promise = fetch('https://api.web3forms.com/submit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
         body: JSON.stringify({
@@ -106,23 +117,43 @@ export default function WaitlistForm({ id = 'waitlist' }: WaitlistFormProps) {
           name: fullName,
           email: email,
           country: country,
-          message: `New waitlist registration:\n\nName: ${fullName}\nEmail: ${email}\nCountry: ${country}\nRegistered At: ${new Date().toLocaleString()}`,
-          // Honeypot (bot protection)
+          message: `New waitlist registration:\n\nName: ${fullName}\nEmail: ${email}\nCountry: ${country}\nQueue Position: #${derivedPos.toLocaleString()}\nTicket: ${derivedTicket}\nRegistered At: ${new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })}`,
           botcheck: '',
+        }),
+      }).then((r) => r.json());
+
+      // ── 2. Submit to Google Sheets (via Apps Script webhook) ──────────────
+      // Uses no-cors because Google Apps Script doesn't send CORS headers.
+      // Data is still written to the sheet successfully.
+      const sheetPromise = fetch(GOOGLE_SHEET_URL, {
+        method: 'POST',
+        mode: 'no-cors',                       // required for Apps Script
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: fullName,
+          email: email,
+          country: country,
+          position: `#${derivedPos.toLocaleString()}`,
+          ticket: derivedTicket,
         }),
       });
 
-      const data = await response.json();
+      // ── Run both in parallel ──────────────────────────────────────────────
+      const [web3Result] = await Promise.allSettled([web3Promise, sheetPromise]);
 
-      if (data.success) {
-        // ── Save locally + show success state ───────────────────────────
+      // Check Web3Forms result (primary — controls success/error state)
+      const web3Data = web3Result.status === 'fulfilled' ? web3Result.value : null;
+
+      if (web3Data?.success) {
+        // ── Save locally + show success ────────────────────────────────────
         const userObj = { fullName, email, country, registeredAt: new Date().toISOString() };
         localStorage.setItem('pride_waitlist_user', JSON.stringify(userObj));
+        setUserPosition(derivedPos);
+        setTicketNumber(derivedTicket);
         setIsJoined(true);
-        generateQueueDetails(email);
         setFormStatus('success');
       } else {
-        throw new Error(data.message || 'Submission failed');
+        throw new Error(web3Data?.message || 'Submission failed. Please try again.');
       }
     } catch (err: unknown) {
       setFormStatus('error');
