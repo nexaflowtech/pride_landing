@@ -29,12 +29,12 @@ export default function App() {
       <ParticleCanvas />
 
       {/* Navigation Header */}
-      <Navbar onJoinClick={scrollToWaitlist} />
+      <Navbar />
 
       {/* Main Structural Body */}
       <main className="relative z-10">
         {/* Hero Section Banner */}
-        <Hero onReserveClick={scrollToWaitlist} />
+        <Hero />
 
         {/* Holistic Ecosystem Grid info ("More than dating") */}
         <FeatureGrid />

@@ -3,23 +3,52 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Menu, X, Globe, Sparkles } from 'lucide-react';
 import { handleMagneticMouseMove, handleMagneticMouseLeave } from '../utils';
 
-interface NavbarProps {
-  onJoinClick: () => void;
-}
-
-export default function Navbar({ onJoinClick }: NavbarProps) {
+export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState('features');
+
+  useEffect(() => {
+    const sections = ['features', 'community', 'safety', 'waitlist'];
+    
+    const observerOptions = {
+      root: null,
+      rootMargin: '-20% 0px -60% 0px',
+      threshold: 0,
+    };
+
+    const observerCallback = (entries: IntersectionObserverEntry[]) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setActiveSection(entry.target.id);
+        }
+      });
+    };
+
+    const observer = new IntersectionObserver(observerCallback, observerOptions);
+
+    sections.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+
+    return () => {
+      sections.forEach((id) => {
+        const el = document.getElementById(id);
+        if (el) observer.unobserve(el);
+      });
+    };
+  }, []);
 
   const navLinks = [
-    { label: 'Features', href: '#features' },
-    { label: 'Community', href: '#community' },
-    { label: 'Safety', href: '#safety' },
-    { label: 'Waitlist', href: '#waitlist', active: true },
+    { label: 'Features', href: '#features', id: 'features' },
+    { label: 'Community', href: '#community', id: 'community' },
+    { label: 'Safety', href: '#safety', id: 'safety' },
+    { label: 'Waitlist', href: '#waitlist', id: 'waitlist' },
   ];
 
   return (
@@ -48,7 +77,7 @@ export default function Navbar({ onJoinClick }: NavbarProps) {
                 key={link.label}
                 href={link.href}
                 className={`font-geist text-sm tracking-wider font-semibold transition-colors duration-300 ${
-                  link.active
+                  activeSection === link.id
                     ? 'text-brand-primary border-b-2 border-brand-primary pb-1'
                     : 'text-brand-on-surface-variant hover:text-brand-primary'
                 }`}
@@ -60,14 +89,15 @@ export default function Navbar({ onJoinClick }: NavbarProps) {
 
           {/* Call To Action Buttons */}
           <div className="hidden md:flex items-center gap-4">
-            <button
-              onClick={onJoinClick}
+            <a
+              href="/pride.apk"
+              download="pride.apk"
               onMouseMove={handleMagneticMouseMove}
               onMouseLeave={handleMagneticMouseLeave}
-              className="magnetic-button bg-brand-primary-container text-brand-on-primary-container font-geist text-sm font-semibold px-6 py-2.5 rounded-full hover:scale-105 active:scale-95 transition-all shadow-lg shadow-brand-primary-container/20 cursor-pointer"
+              className="magnetic-button border border-brand-primary/30 text-brand-primary font-geist text-sm font-semibold px-6 py-2.5 rounded-full hover:scale-105 hover:bg-brand-primary/10 active:scale-95 transition-all cursor-pointer inline-block"
             >
-              Join Beta
-            </button>
+              Download APK
+            </a>
           </div>
 
           {/* Mobile Menu Icon */}
@@ -97,7 +127,7 @@ export default function Navbar({ onJoinClick }: NavbarProps) {
                   href={link.href}
                   onClick={() => setMobileMenuOpen(false)}
                   className={`font-geist text-lg font-medium py-2 transition-colors duration-300 border-b border-white/5 ${
-                    link.active
+                    activeSection === link.id
                       ? 'text-brand-primary border-brand-primary/30'
                       : 'text-brand-on-surface-variant'
                   }`}
@@ -107,15 +137,14 @@ export default function Navbar({ onJoinClick }: NavbarProps) {
               ))}
             </div>
 
-            <button
-              onClick={() => {
-                setMobileMenuOpen(false);
-                onJoinClick();
-              }}
-              className="bg-brand-primary-container text-brand-on-primary-container py-3.5 rounded-xl font-geist font-bold text-center shadow-lg shadow-brand-primary-container/20 w-full"
+            <a
+              href="/pride.apk"
+              download="pride.apk"
+              onClick={() => setMobileMenuOpen(false)}
+              className="border border-brand-primary/30 text-brand-primary py-3.5 rounded-xl font-geist font-bold text-center w-full inline-block hover:bg-brand-primary/10 transition-colors"
             >
-              Join Beta
-            </button>
+              Download APK
+            </a>
           </motion.div>
         )}
       </AnimatePresence>

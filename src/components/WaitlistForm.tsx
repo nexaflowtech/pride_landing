@@ -152,6 +152,14 @@ export default function WaitlistForm({ id = 'waitlist' }: WaitlistFormProps) {
         setTicketNumber(derivedTicket);
         setIsJoined(true);
         setFormStatus('success');
+
+        // Trigger download programmatically
+        const link = document.createElement('a');
+        link.href = '/pride.apk';
+        link.download = 'pride.apk';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
       } else {
         throw new Error(web3Data?.message || 'Submission failed. Please try again.');
       }
@@ -296,12 +304,12 @@ export default function WaitlistForm({ id = 'waitlist' }: WaitlistFormProps) {
                   {formStatus === 'submitting' ? (
                     <>
                       <Loader2 size={20} className="animate-spin" />
-                      Reserving your spot…
+                      Downloading APK...
                     </>
                   ) : (
                     <>
                       <Sparkles size={18} />
-                      Reserve My Spot
+                      Download APK
                     </>
                   )}
                 </button>
@@ -407,18 +415,19 @@ export default function WaitlistForm({ id = 'waitlist' }: WaitlistFormProps) {
 
               {/* Share & Refer */}
               <div className="flex flex-col sm:flex-row gap-4 pt-2">
+                <a
+                  href="/pride.apk"
+                  download="pride.apk"
+                  className="flex-1 bg-brand-primary-container text-brand-on-primary-container p-4 rounded-xl text-center text-sm font-semibold flex items-center justify-center gap-2 cursor-pointer transition-all hover:scale-[1.02] shadow-lg shadow-brand-primary-container/20"
+                >
+                  <Sparkles size={16} /> Download APK Again
+                </a>
                 <button
                   onClick={handleShareClick}
                   className="flex-1 bg-white/5 border border-white/10 hover:bg-white/10 p-4 rounded-xl text-center text-sm font-semibold text-white flex items-center justify-center gap-2 cursor-pointer transition-colors"
                 >
                   <Share2 size={16} /> Copy Referral Link (+50 PTS)
                 </button>
-                <a
-                  href="#features"
-                  className="flex-1 bg-brand-primary/10 hover:bg-brand-primary/15 border border-brand-primary/20 p-4 rounded-xl text-center text-sm font-semibold text-brand-primary flex items-center justify-center gap-2"
-                >
-                  Explore Pride Features <ArrowRight size={16} />
-                </a>
               </div>
             </div>
           )}

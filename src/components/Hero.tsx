@@ -8,11 +8,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { Play, Sparkles, Shield, Users, Heart, Award, Volume2, VolumeX, X } from 'lucide-react';
 import { handleSpotlightMouseMove, handleMagneticMouseMove, handleMagneticMouseLeave } from '../utils';
 
-interface HeroProps {
-  onReserveClick: () => void;
-}
-
-export default function Hero({ onReserveClick }: HeroProps) {
+export default function Hero() {
   const [isVideoOpen, setIsVideoOpen] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
 
@@ -71,14 +67,15 @@ export default function Hero({ onReserveClick }: HeroProps) {
 
           {/* Action Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 items-stretch sm:items-center">
-            <button
-              onClick={onReserveClick}
+            <a
+              href="/pride.apk"
+              download="pride.apk"
               onMouseMove={handleMagneticMouseMove}
               onMouseLeave={handleMagneticMouseLeave}
-              className="bg-brand-primary-container text-brand-on-primary-container px-8 py-4 rounded-xl font-geist font-bold text-center hover:scale-[1.02] transition-transform shadow-lg shadow-brand-primary-container/25 cursor-pointer"
+              className="bg-brand-primary-container text-brand-on-primary-container px-8 py-4 rounded-xl font-geist font-bold text-center hover:scale-[1.02] transition-transform shadow-lg shadow-brand-primary-container/25 cursor-pointer inline-block"
             >
-              Reserve My Spot
-            </button>
+              Download APK
+            </a>
             <button
               onClick={() => setIsVideoOpen(true)}
               onMouseMove={handleMagneticMouseMove}
