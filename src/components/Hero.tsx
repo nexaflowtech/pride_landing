@@ -3,14 +3,28 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Play, Sparkles, Shield, Users, Heart, Award, Volume2, VolumeX, X } from 'lucide-react';
 import { handleSpotlightMouseMove, handleMagneticMouseMove, handleMagneticMouseLeave } from '../utils';
 
+const appScreenshots = [
+  '/pride.png',
+  '/pride1.png',
+  '/pride2.png'
+];
+
 export default function Hero() {
   const [isVideoOpen, setIsVideoOpen] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
+  const [currentScreen, setCurrentScreen] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentScreen((prev) => (prev + 1) % appScreenshots.length);
+    }, 4000);
+    return () => clearInterval(timer);
+  }, []);
 
   return (
     <section className="relative min-h-screen flex items-center justify-center pt-32 pb-16 overflow-hidden">
@@ -103,18 +117,25 @@ export default function Hero() {
               <span className="w-10 h-1 rounded-full bg-white/20"></span>
             </div>
 
-            {/* Hotlinked LGBTQ+ social ui screenshot */}
-            <img
-              className="w-full h-full object-cover transition-transform duration-[1.5s] group-hover:scale-105"
-              alt="Pride Application Feed Mockup"
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuAO0iYsQoYDHKoWFssJCQRvGc-hNSs-QYr_5jXgucwni8X02FHYikt_sJxxB4xAXklur-qPuIoqm7zf4iAhBJ1C5Kdey-z9oVIMELXekXOM9BlBd3tDvmPFPEnOHcB5VTOXOlUDF9taj0bdHCEifvbYPiCvPqZpNEV8uErVHhulIcWcmhWVQWUfywNuaVifXKxwtRm9e884VEKu9mYXRnSZegCnAiymlQpJZMJbD0DwIPI1X9Iu-BBRc-8-l8tlrvDH2vS7q27-JA"
-            />
+            {/* Animated screenshots */}
+            <AnimatePresence mode="popLayout">
+              <motion.img
+                key={currentScreen}
+                src={appScreenshots[currentScreen]}
+                initial={{ opacity: 0, scale: 1.05 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                transition={{ duration: 0.8, ease: "easeInOut" }}
+                className="absolute inset-0 w-full h-full object-cover z-10"
+                alt={`Pride Application Screenshot ${currentScreen + 1}`}
+              />
+            </AnimatePresence>
 
             {/* Dark vignette overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/10 to-transparent pointer-events-none"></div>
+            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/10 to-transparent pointer-events-none z-20"></div>
 
             {/* Bottom active status overlay on mockup */}
-            <div className="absolute bottom-8 left-0 right-0 px-6 text-white text-left">
+            <div className="absolute bottom-8 left-0 right-0 px-6 text-white text-left z-20">
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-10 h-10 rounded-full border-2 border-brand-primary overflow-hidden shadow-md">
                   <img
