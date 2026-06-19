@@ -14,10 +14,17 @@ const appScreenshots = [
   '/pride2.png'
 ];
 
+const videos = [
+  { id: 'video1', title: 'Pride Intro Teaser', src: '/video1.mp4' },
+  { id: 'video2', title: 'Community Sanctuary', src: '/video2.mp4' },
+  { id: 'video3', title: 'Platform Security', src: '/video3.mp4' },
+];
+
 export default function Hero() {
   const [isVideoOpen, setIsVideoOpen] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
   const [currentScreen, setCurrentScreen] = useState(0);
+  const [activeVideo, setActiveVideo] = useState('/video1.mp4');
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -25,6 +32,31 @@ export default function Hero() {
     }, 4000);
     return () => clearInterval(timer);
   }, []);
+
+  // Close modal on browser back / hash change
+  useEffect(() => {
+    const handlePopState = () => {
+      setIsVideoOpen(false);
+    };
+    window.addEventListener('popstate', handlePopState);
+    window.addEventListener('hashchange', handlePopState);
+    return () => {
+      window.removeEventListener('popstate', handlePopState);
+      window.removeEventListener('hashchange', handlePopState);
+    };
+  }, []);
+
+  // Lock body scroll when modal is open
+  useEffect(() => {
+    if (isVideoOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isVideoOpen]);
 
   return (
     <section className="relative min-h-screen flex items-center justify-center pt-32 pb-16 overflow-hidden">
@@ -183,49 +215,86 @@ export default function Hero() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/90 backdrop-blur-md z-[100] flex items-center justify-center p-4"
+            onClick={() => setIsVideoOpen(false)}
+            className="fixed inset-0 bg-black/90 backdrop-blur-md z-[100] flex items-center justify-center p-4 cursor-pointer"
           >
             <motion.div
               initial={{ scale: 0.95 }}
               animate={{ scale: 1 }}
               exit={{ scale: 0.95 }}
-              className="relative w-full max-w-4xl glass-card rounded-2xl overflow-hidden aspect-video bg-zinc-950 p-1 flex flex-col justify-between"
+              onClick={(e) => e.stopPropagation()}
+              className="relative w-full max-w-5xl glass-card rounded-3xl overflow-hidden bg-[#1e0f13]/95 border border-white/10 p-4 md:p-6 flex flex-col lg:flex-row gap-6 shadow-2xl cursor-default"
             >
-              {/* Fake Media Content */}
-              <div className="absolute inset-0 flex flex-col justify-between p-6 bg-gradient-to-t from-black/80 via-transparent to-black/30 z-10 pointer-events-none">
-                <div className="flex justify-between items-center pointer-events-auto">
-                  <span className="font-geist text-sm tracking-widest font-bold text-brand-primary">
-                    PRIDE MINDFUL TEASER
+              {/* Left Column: Video Player */}
+              <div className="flex-1 relative aspect-video rounded-2xl overflow-hidden bg-black/50 border border-white/5 flex items-center justify-center">
+                <video
+                  key={activeVideo}
+                  src={activeVideo}
+                  autoPlay
+                  controls
+                  muted={isMuted}
+                  className="w-full h-full"
+                />
+                
+                {/* Header overlay for close button */}
+                <div className="absolute top-4 left-4 right-4 flex justify-between items-center pointer-events-none z-10">
+                  <span className="font-geist text-xs tracking-widest font-bold text-brand-primary bg-black/50 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/5">
+                    PRIDE SPOTLIGHT
                   </span>
                   <button
                     onClick={() => setIsVideoOpen(false)}
-                    className="p-1 px-2.5 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors cursor-pointer"
+                    className="p-2 rounded-full bg-black/50 backdrop-blur-md hover:bg-white/10 text-white transition-colors cursor-pointer border border-white/5 pointer-events-auto"
                   >
                     <X size={18} />
                   </button>
                 </div>
-
-                <div className="flex justify-between items-center pointer-events-auto">
-                  <div className="flex items-center gap-3">
-                    <button
-                      onClick={() => setIsMuted(!isMuted)}
-                      className="p-2 bg-white/10 hover:bg-white/20 text-white rounded-full transition-colors cursor-pointer"
-                    >
-                      {isMuted ? <VolumeX size={18} /> : <Volume2 size={18} />}
-                    </button>
-                    <span className="text-xs text-white/70 font-mono">0:24 / 1:30</span>
-                  </div>
-                  <span className="text-xs text-brand-on-surface-variant font-mono">CC / English</span>
-                </div>
               </div>
 
-              {/* Looping Abstract Cinematic Video Representation */}
-              <iframe
-                className="w-full h-full rounded-xl pointer-events-none opacity-85"
-                src={`https://www.youtube.com/embed/S2CclUf98_s?autoplay=1&mute=${isMuted ? 1 : 0}&loop=1&playlist=S2CclUf98_s&controls=0&showinfo=0&rel=0`}
-                title="Pride Teaser"
-                allow="autoplay"
-              />
+              {/* Right Column: Playlist */}
+              <div className="w-full lg:w-72 flex flex-col shrink-0 text-left">
+                <div className="flex justify-between items-center mb-4 pb-2 border-b border-white/5">
+                  <span className="font-geist text-xs font-bold text-brand-on-surface-variant tracking-wider uppercase">
+                    WATCH FILM PLAYLIST
+                  </span>
+                  <button
+                    onClick={() => setIsMuted(!isMuted)}
+                    className="text-xs text-brand-primary font-geist flex items-center gap-1.5 cursor-pointer bg-brand-primary/10 hover:bg-brand-primary/25 px-2.5 py-1 rounded-full transition-all border border-brand-primary/20"
+                  >
+                    {isMuted ? <VolumeX size={14} /> : <Volume2 size={14} />} {isMuted ? "Unmute" : "Mute"}
+                  </button>
+                </div>
+
+                <div className="flex flex-col gap-3">
+                  {videos.map((vid, idx) => {
+                    const isActive = activeVideo === vid.src;
+                    return (
+                      <button
+                        key={vid.id}
+                        onClick={() => setActiveVideo(vid.src)}
+                        className={`w-full p-3 rounded-xl text-left transition-all border flex gap-3.5 items-center group cursor-pointer ${
+                          isActive
+                            ? 'bg-brand-primary/15 border-brand-primary text-white shadow-lg shadow-brand-primary/5'
+                            : 'bg-white/5 border-white/5 text-brand-on-surface-variant hover:bg-white/10 hover:border-white/10'
+                        }`}
+                      >
+                        <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 transition-colors ${
+                          isActive ? 'bg-brand-primary text-brand-on-primary-container' : 'bg-white/5 text-white/50 group-hover:text-white'
+                        }`}>
+                          <Play size={14} className={isActive ? "fill-current" : ""} />
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          <p className="font-geist text-sm font-semibold truncate leading-tight">
+                            {vid.title}
+                          </p>
+                          <p className="text-[10px] text-white/40 mt-1 font-mono">
+                            Video {idx + 1}
+                          </p>
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
             </motion.div>
           </motion.div>
         )}
