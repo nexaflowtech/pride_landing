@@ -114,13 +114,17 @@ export default function Hero() {
           {/* Action Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 items-stretch sm:items-center">
             <a
-              href="/pride.apk"
-              download="pride.apk"
+              href="https://drive.google.com/uc?export=download&id=1jEh-qgMSikKx-nru39YkKK7pH884fWCL"
+              target="_blank"
+              rel="noopener noreferrer"
               onMouseMove={handleMagneticMouseMove}
               onMouseLeave={handleMagneticMouseLeave}
-              className="bg-brand-primary-container text-brand-on-primary-container px-8 py-4 rounded-xl font-geist font-bold text-center hover:scale-[1.02] transition-transform shadow-lg shadow-brand-primary-container/25 cursor-pointer inline-block"
+              className="bg-brand-primary-container text-brand-on-primary-container px-8 py-4 rounded-xl font-geist font-bold text-center hover:scale-[1.02] transition-transform shadow-lg shadow-brand-primary-container/25 cursor-pointer flex items-center justify-center gap-2.5"
             >
-              Download APK
+              <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
+                <path d="M16.607 13.93c-.6 0-1.085-.486-1.085-1.085s.486-1.085 1.085-1.085c.6 0 1.085.486 1.085 1.085s-.485 1.085-1.085 1.085zm-9.214 0c-.6 0-1.085-.486-1.085-1.085s.486-1.085 1.085-1.085c.6 0 1.085.486 1.085 1.085s-.486 1.085-1.085 1.085zm9.539-7.234l1.378-2.387a.382.382 0 00-.14-.522.382.382 0 00-.522.14l-1.401 2.428C15.281 5.922 13.682 5.64 12 5.64c-1.682 0-3.28.282-4.686.715L5.913 3.927a.382.382 0 00-.522-.14.382.382 0 00-.14.522l1.378 2.387C3.593 8.354 1.5 11.236 1.5 14.6h21c0-3.364-2.093-6.246-5.138-7.904z" />
+              </svg>
+              <span>Download Now</span>
             </a>
             <button
               onClick={() => setIsVideoOpen(true)}
