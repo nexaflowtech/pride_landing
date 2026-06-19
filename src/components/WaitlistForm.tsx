@@ -6,7 +6,7 @@
 import React, { useState, useEffect } from 'react';
 import { CheckCircle, Sparkles, User, Mail, Globe, ArrowRight, Share2, Zap, Loader2 } from 'lucide-react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { byPrefixAndName } from '@fortawesome/fontawesome-svg-core/import.macro';
+import { faGooglePlay } from '@fortawesome/free-brands-svg-icons';
 
 // ─── All Countries List ────────────────────────────────────────────────────
 const ALL_COUNTRIES = [
@@ -311,7 +311,7 @@ export default function WaitlistForm({ id = 'waitlist' }: WaitlistFormProps) {
                     </>
                   ) : (
                     <>
-                      <FontAwesomeIcon icon={byPrefixAndName.fab['google-play']} className="w-5 h-5" />
+                      <FontAwesomeIcon icon={faGooglePlay} className="w-5 h-5" />
                       <span>Download Now</span>
                     </>
                   )}
@@ -424,7 +424,7 @@ export default function WaitlistForm({ id = 'waitlist' }: WaitlistFormProps) {
                   rel="noopener noreferrer"
                   className="flex-1 bg-brand-primary-container text-brand-on-primary-container p-4 rounded-xl text-center text-sm font-semibold flex items-center justify-center gap-2 cursor-pointer transition-all hover:scale-[1.02] shadow-lg shadow-brand-primary-container/20"
                 >
-                  <FontAwesomeIcon icon={byPrefixAndName.fab['google-play']} className="w-4 h-4" />
+                  <FontAwesomeIcon icon={faGooglePlay} className="w-4 h-4" />
                   <span>Download Now Again</span>
                 </a>
                 <button

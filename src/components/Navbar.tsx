@@ -8,7 +8,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { Menu, X, Globe, Sparkles } from 'lucide-react';
 import { handleMagneticMouseMove, handleMagneticMouseLeave } from '../utils';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { byPrefixAndName } from '@fortawesome/fontawesome-svg-core/import.macro';
+import { faGooglePlay } from '@fortawesome/free-brands-svg-icons';
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -99,7 +99,7 @@ export default function Navbar() {
               onMouseLeave={handleMagneticMouseLeave}
               className="magnetic-button border border-brand-primary/30 text-brand-primary font-geist text-sm font-semibold px-6 py-2.5 rounded-full hover:scale-105 hover:bg-brand-primary/10 active:scale-95 transition-all cursor-pointer inline-flex items-center gap-2"
             >
-              <FontAwesomeIcon icon={byPrefixAndName.fab['google-play']} className="w-4 h-4" />
+              <FontAwesomeIcon icon={faGooglePlay} className="w-4 h-4" />
               <span>Download Now</span>
             </a>
           </div>
@@ -148,7 +148,7 @@ export default function Navbar() {
               onClick={() => setMobileMenuOpen(false)}
               className="border border-brand-primary/30 text-brand-primary py-3.5 rounded-xl font-geist font-bold text-center w-full flex items-center justify-center gap-2 hover:bg-brand-primary/10 transition-colors"
             >
-              <FontAwesomeIcon icon={byPrefixAndName.fab['google-play']} className="w-5 h-5" />
+              <FontAwesomeIcon icon={faGooglePlay} className="w-5 h-5" />
               <span>Download Now</span>
             </a>
           </motion.div>

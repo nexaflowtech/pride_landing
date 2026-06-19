@@ -8,7 +8,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { Play, Sparkles, Shield, Users, Heart, Award, Volume2, VolumeX, X } from 'lucide-react';
 import { handleSpotlightMouseMove, handleMagneticMouseMove, handleMagneticMouseLeave } from '../utils';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { byPrefixAndName } from '@fortawesome/fontawesome-svg-core/import.macro';
+import { faGooglePlay } from '@fortawesome/free-brands-svg-icons';
 
 const appScreenshots = [
   '/pride.png',
@@ -123,7 +123,7 @@ export default function Hero() {
               onMouseLeave={handleMagneticMouseLeave}
               className="bg-brand-primary-container text-brand-on-primary-container px-8 py-4 rounded-xl font-geist font-bold text-center hover:scale-[1.02] transition-transform shadow-lg shadow-brand-primary-container/25 cursor-pointer flex items-center justify-center gap-2.5"
             >
-              <FontAwesomeIcon icon={byPrefixAndName.fab['google-play']} className="w-5 h-5" />
+              <FontAwesomeIcon icon={faGooglePlay} className="w-5 h-5" />
               <span>Download Now</span>
             </a>
             <button
