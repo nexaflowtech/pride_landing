@@ -18,9 +18,18 @@ interface DownloadModalProps {
 
 export default function DownloadModal({ isOpen, onClose }: DownloadModalProps) {
   const handleDownload = () => {
-    // Direct user gesture → not blocked by popup blockers
-    window.open(DOWNLOAD_URL, '_blank', 'noopener,noreferrer');
     onClose();
+
+    const isMobile = /android|iphone|ipad|ipod/i.test(navigator.userAgent);
+
+    if (isMobile) {
+      // On mobile, same-tab navigation is far more reliable for triggering
+      // APK downloads — avoids popup-blocker and redirect-chain issues.
+      window.location.href = DOWNLOAD_URL;
+    } else {
+      // On desktop, open in new tab as usual.
+      window.open(DOWNLOAD_URL, '_blank', 'noopener,noreferrer');
+    }
   };
 
   return (
