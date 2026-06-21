@@ -9,7 +9,7 @@ import { faGooglePlay } from '@fortawesome/free-brands-svg-icons';
 import { X, ShieldCheck } from 'lucide-react';
 
 const DOWNLOAD_URL =
-  'https://drive.google.com/file/d/1sD3gs3iEPt-Chvkk0JtbAYO7Yy84NaPk/view?usp=sharing';
+  'https://drive.google.com/uc?export=download&id=1sD3gs3iEPt-Chvkk0JtbAYO7Yy84NaPk&confirm=t';
 
 interface DownloadModalProps {
   isOpen: boolean;
