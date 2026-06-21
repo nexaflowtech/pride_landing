@@ -92,9 +92,10 @@ export default function Navbar() {
           {/* Call To Action Buttons */}
           <div className="hidden md:flex items-center gap-4">
             <a
-              href="https://drive.google.com/file/d/1bonuK6Cds-gYwZD756aKVTgkLPhtDWFF/view?usp=sharing"
+              href="https://drive.google.com/file/d/1sD3gs3iEPt-Chvkk0JtbAYO7Yy84NaPk/view?usp=sharing"
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => alert('🌈💜 Pride is 100% safe and secure. You\'ve been granted exclusive Priority Access to our Closed Testing program and are among the first users to experience the app before its public launch.')}
               onMouseMove={handleMagneticMouseMove}
               onMouseLeave={handleMagneticMouseLeave}
               className="magnetic-button border border-brand-primary/30 text-brand-primary font-geist text-sm font-semibold px-6 py-2.5 rounded-full hover:scale-105 hover:bg-brand-primary/10 active:scale-95 transition-all cursor-pointer inline-flex items-center gap-2"
@@ -142,10 +143,10 @@ export default function Navbar() {
             </div>
 
             <a
-              href="https://drive.google.com/file/d/1bonuK6Cds-gYwZD756aKVTgkLPhtDWFF/view?usp=sharing"
+              href="https://drive.google.com/file/d/1sD3gs3iEPt-Chvkk0JtbAYO7Yy84NaPk/view?usp=sharing"
               target="_blank"
               rel="noopener noreferrer"
-              onClick={() => setMobileMenuOpen(false)}
+              onClick={() => { setMobileMenuOpen(false); alert('🌈💜 Pride is 100% safe and secure. You\'ve been granted exclusive Priority Access to our Closed Testing program and are among the first users to experience the app before its public launch.'); }}
               className="border border-brand-primary/30 text-brand-primary py-3.5 rounded-xl font-geist font-bold text-center w-full flex items-center justify-center gap-2 hover:bg-brand-primary/10 transition-colors"
             >
               <FontAwesomeIcon icon={faGooglePlay} className="w-5 h-5" />

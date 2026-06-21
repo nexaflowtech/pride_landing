@@ -116,9 +116,10 @@ export default function Hero() {
           {/* Action Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 items-stretch sm:items-center">
             <a
-              href="https://drive.google.com/file/d/1bonuK6Cds-gYwZD756aKVTgkLPhtDWFF/view?usp=sharing"
+              href="https://drive.google.com/file/d/1sD3gs3iEPt-Chvkk0JtbAYO7Yy84NaPk/view?usp=sharing"
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => alert('🌈💜 Pride is 100% safe and secure. You\'ve been granted exclusive Priority Access to our Closed Testing program and are among the first users to experience the app before its public launch.')}
               onMouseMove={handleMagneticMouseMove}
               onMouseLeave={handleMagneticMouseLeave}
               className="bg-brand-primary-container text-brand-on-primary-container px-8 py-4 rounded-xl font-geist font-bold text-center hover:scale-[1.02] transition-transform shadow-lg shadow-brand-primary-container/25 cursor-pointer flex items-center justify-center gap-2.5"
