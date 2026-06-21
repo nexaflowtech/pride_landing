@@ -9,6 +9,7 @@ import { Play, Sparkles, Shield, Users, Heart, Award, Volume2, VolumeX, X } from
 import { handleSpotlightMouseMove, handleMagneticMouseMove, handleMagneticMouseLeave } from '../utils';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGooglePlay } from '@fortawesome/free-brands-svg-icons';
+import DownloadModal from './DownloadModal';
 
 const appScreenshots = [
   '/pride.png',
@@ -27,6 +28,7 @@ export default function Hero() {
   const [isMuted, setIsMuted] = useState(true);
   const [currentScreen, setCurrentScreen] = useState(0);
   const [activeVideo, setActiveVideo] = useState('/video1.mp4');
+  const [isDownloadModalOpen, setIsDownloadModalOpen] = useState(false);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -115,18 +117,15 @@ export default function Hero() {
 
           {/* Action Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 items-stretch sm:items-center">
-            <a
-              href="https://drive.google.com/file/d/1sD3gs3iEPt-Chvkk0JtbAYO7Yy84NaPk/view?usp=sharing"
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={() => alert('🌈💜 Pride is 100% safe and secure. You\'ve been granted exclusive Priority Access to our Closed Testing program and are among the first users to experience the app before its public launch.')}
+            <button
+              onClick={() => setIsDownloadModalOpen(true)}
               onMouseMove={handleMagneticMouseMove}
               onMouseLeave={handleMagneticMouseLeave}
               className="bg-brand-primary-container text-brand-on-primary-container px-8 py-4 rounded-xl font-geist font-bold text-center hover:scale-[1.02] transition-transform shadow-lg shadow-brand-primary-container/25 cursor-pointer flex items-center justify-center gap-2.5"
             >
               <FontAwesomeIcon icon={faGooglePlay} className="w-5 h-5" />
               <span>Download Now</span>
-            </a>
+            </button>
             <button
               onClick={() => setIsVideoOpen(true)}
               onMouseMove={handleMagneticMouseMove}
@@ -304,6 +303,12 @@ export default function Hero() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Download confirmation modal */}
+      <DownloadModal
+        isOpen={isDownloadModalOpen}
+        onClose={() => setIsDownloadModalOpen(false)}
+      />
     </section>
   );
 }

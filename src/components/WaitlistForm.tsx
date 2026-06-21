@@ -7,6 +7,7 @@ import React, { useState, useEffect } from 'react';
 import { CheckCircle, Sparkles, User, Mail, Globe, ArrowRight, Share2, Zap, Loader2 } from 'lucide-react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGooglePlay } from '@fortawesome/free-brands-svg-icons';
+import DownloadModal from './DownloadModal';
 
 // ─── All Countries List ────────────────────────────────────────────────────
 const ALL_COUNTRIES = [
@@ -67,6 +68,7 @@ export default function WaitlistForm({ id = 'waitlist' }: WaitlistFormProps) {
   const [selectedPollOption, setSelectedPollOption] = useState<string | null>(null);
   const [formStatus, setFormStatus] = useState<FormStatus>('idle');
   const [errorMessage, setErrorMessage] = useState('');
+  const [isDownloadModalOpen, setIsDownloadModalOpen] = useState(false);
 
   // Load existing registration if any
   useEffect(() => {
@@ -155,15 +157,8 @@ export default function WaitlistForm({ id = 'waitlist' }: WaitlistFormProps) {
         setIsJoined(true);
         setFormStatus('success');
 
-        // Trigger download programmatically
-        const link = document.createElement('a');
-        link.href = 'https://drive.google.com/file/d/1sD3gs3iEPt-Chvkk0JtbAYO7Yy84NaPk/view?usp=sharing';
-        link.target = '_blank';
-        link.rel = 'noopener noreferrer';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        alert('🌈💜 Pride is 100% safe and secure. You\'ve been granted exclusive Priority Access to our Closed Testing program and are among the first users to experience the app before its public launch.');
+        // Open download confirmation modal (user gesture — avoids popup blocker)
+        setIsDownloadModalOpen(true);
       } else {
         throw new Error(web3Data?.message || 'Submission failed. Please try again.');
       }
@@ -205,6 +200,7 @@ export default function WaitlistForm({ id = 'waitlist' }: WaitlistFormProps) {
   };
 
   return (
+    <>
     <section className="py-24 relative overflow-hidden" id={id}>
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-brand-primary/5 to-transparent pointer-events-none"></div>
 
@@ -419,16 +415,13 @@ export default function WaitlistForm({ id = 'waitlist' }: WaitlistFormProps) {
 
               {/* Share & Refer */}
               <div className="flex flex-col sm:flex-row gap-4 pt-2">
-                <a
-                  href="https://drive.google.com/file/d/1sD3gs3iEPt-Chvkk0JtbAYO7Yy84NaPk/view?usp=sharing"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={() => alert('🌈💜 Pride is 100% safe and secure. You\'ve been granted exclusive Priority Access to our Closed Testing program and are among the first users to experience the app before its public launch.')}
+                <button
+                  onClick={() => setIsDownloadModalOpen(true)}
                   className="flex-1 bg-brand-primary-container text-brand-on-primary-container p-4 rounded-xl text-center text-sm font-semibold flex items-center justify-center gap-2 cursor-pointer transition-all hover:scale-[1.02] shadow-lg shadow-brand-primary-container/20"
                 >
                   <FontAwesomeIcon icon={faGooglePlay} className="w-4 h-4" />
                   <span>Download Now Again</span>
-                </a>
+                </button>
                 <button
                   onClick={handleShareClick}
                   className="flex-1 bg-white/5 border border-white/10 hover:bg-white/10 p-4 rounded-xl text-center text-sm font-semibold text-white flex items-center justify-center gap-2 cursor-pointer transition-colors"
@@ -441,5 +434,12 @@ export default function WaitlistForm({ id = 'waitlist' }: WaitlistFormProps) {
         </div>
       </div>
     </section>
+
+    {/* Download confirmation modal */}
+    <DownloadModal
+      isOpen={isDownloadModalOpen}
+      onClose={() => setIsDownloadModalOpen(false)}
+    />
+    </>
   );
 }

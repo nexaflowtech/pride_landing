@@ -9,10 +9,12 @@ import { Menu, X, Globe, Sparkles } from 'lucide-react';
 import { handleMagneticMouseMove, handleMagneticMouseLeave } from '../utils';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGooglePlay } from '@fortawesome/free-brands-svg-icons';
+import DownloadModal from './DownloadModal';
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('features');
+  const [isDownloadModalOpen, setIsDownloadModalOpen] = useState(false);
 
   useEffect(() => {
     const sections = ['features', 'community', 'safety', 'waitlist'];
@@ -91,18 +93,15 @@ export default function Navbar() {
 
           {/* Call To Action Buttons */}
           <div className="hidden md:flex items-center gap-4">
-            <a
-              href="https://drive.google.com/file/d/1sD3gs3iEPt-Chvkk0JtbAYO7Yy84NaPk/view?usp=sharing"
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={() => alert('🌈💜 Pride is 100% safe and secure. You\'ve been granted exclusive Priority Access to our Closed Testing program and are among the first users to experience the app before its public launch.')}
+            <button
+              onClick={() => setIsDownloadModalOpen(true)}
               onMouseMove={handleMagneticMouseMove}
               onMouseLeave={handleMagneticMouseLeave}
               className="magnetic-button border border-brand-primary/30 text-brand-primary font-geist text-sm font-semibold px-6 py-2.5 rounded-full hover:scale-105 hover:bg-brand-primary/10 active:scale-95 transition-all cursor-pointer inline-flex items-center gap-2"
             >
               <FontAwesomeIcon icon={faGooglePlay} className="w-4 h-4" />
               <span>Download Now</span>
-            </a>
+            </button>
           </div>
 
           {/* Mobile Menu Icon */}
@@ -142,19 +141,22 @@ export default function Navbar() {
               ))}
             </div>
 
-            <a
-              href="https://drive.google.com/file/d/1sD3gs3iEPt-Chvkk0JtbAYO7Yy84NaPk/view?usp=sharing"
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={() => { setMobileMenuOpen(false); alert('🌈💜 Pride is 100% safe and secure. You\'ve been granted exclusive Priority Access to our Closed Testing program and are among the first users to experience the app before its public launch.'); }}
-              className="border border-brand-primary/30 text-brand-primary py-3.5 rounded-xl font-geist font-bold text-center w-full flex items-center justify-center gap-2 hover:bg-brand-primary/10 transition-colors"
+            <button
+              onClick={() => { setMobileMenuOpen(false); setIsDownloadModalOpen(true); }}
+              className="border border-brand-primary/30 text-brand-primary py-3.5 rounded-xl font-geist font-bold text-center w-full flex items-center justify-center gap-2 hover:bg-brand-primary/10 transition-colors cursor-pointer"
             >
               <FontAwesomeIcon icon={faGooglePlay} className="w-5 h-5" />
               <span>Download Now</span>
-            </a>
+            </button>
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Download confirmation modal */}
+      <DownloadModal
+        isOpen={isDownloadModalOpen}
+        onClose={() => setIsDownloadModalOpen(false)}
+      />
     </>
   );
 }
