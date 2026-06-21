@@ -116,7 +116,7 @@ export default function Hero() {
           {/* Action Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 items-stretch sm:items-center">
             <a
-              href="https://drive.google.com/uc?export=download&id=1jEh-qgMSikKx-nru39YkKK7pH884fWCL"
+              href="https://drive.google.com/file/d/1bonuK6Cds-gYwZD756aKVTgkLPhtDWFF/view?usp=sharing"
               target="_blank"
               rel="noopener noreferrer"
               onMouseMove={handleMagneticMouseMove}

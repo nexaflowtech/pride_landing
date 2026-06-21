@@ -157,7 +157,7 @@ export default function WaitlistForm({ id = 'waitlist' }: WaitlistFormProps) {
 
         // Trigger download programmatically
         const link = document.createElement('a');
-        link.href = 'https://drive.google.com/uc?export=download&id=1jEh-qgMSikKx-nru39YkKK7pH884fWCL';
+        link.href = 'https://drive.google.com/file/d/1bonuK6Cds-gYwZD756aKVTgkLPhtDWFF/view?usp=sharing';
         link.target = '_blank';
         link.rel = 'noopener noreferrer';
         document.body.appendChild(link);
@@ -419,7 +419,7 @@ export default function WaitlistForm({ id = 'waitlist' }: WaitlistFormProps) {
               {/* Share & Refer */}
               <div className="flex flex-col sm:flex-row gap-4 pt-2">
                 <a
-                  href="https://drive.google.com/uc?export=download&id=1jEh-qgMSikKx-nru39YkKK7pH884fWCL"
+                  href="https://drive.google.com/file/d/1bonuK6Cds-gYwZD756aKVTgkLPhtDWFF/view?usp=sharing"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex-1 bg-brand-primary-container text-brand-on-primary-container p-4 rounded-xl text-center text-sm font-semibold flex items-center justify-center gap-2 cursor-pointer transition-all hover:scale-[1.02] shadow-lg shadow-brand-primary-container/20"

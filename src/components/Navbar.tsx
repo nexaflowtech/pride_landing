@@ -92,7 +92,7 @@ export default function Navbar() {
           {/* Call To Action Buttons */}
           <div className="hidden md:flex items-center gap-4">
             <a
-              href="https://drive.google.com/uc?export=download&id=1jEh-qgMSikKx-nru39YkKK7pH884fWCL"
+              href="https://drive.google.com/file/d/1bonuK6Cds-gYwZD756aKVTgkLPhtDWFF/view?usp=sharing"
               target="_blank"
               rel="noopener noreferrer"
               onMouseMove={handleMagneticMouseMove}
@@ -142,7 +142,7 @@ export default function Navbar() {
             </div>
 
             <a
-              href="https://drive.google.com/uc?export=download&id=1jEh-qgMSikKx-nru39YkKK7pH884fWCL"
+              href="https://drive.google.com/file/d/1bonuK6Cds-gYwZD756aKVTgkLPhtDWFF/view?usp=sharing"
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => setMobileMenuOpen(false)}
