@@ -20,16 +20,17 @@ export default function DownloadModal({ isOpen, onClose }: DownloadModalProps) {
   const handleDownload = () => {
     onClose();
 
-    const isMobile = /android|iphone|ipad|ipod/i.test(navigator.userAgent);
-
-    if (isMobile) {
-      // On mobile, same-tab navigation is far more reliable for triggering
-      // APK downloads — avoids popup-blocker and redirect-chain issues.
-      window.location.href = DOWNLOAD_URL;
-    } else {
-      // On desktop, open in new tab as usual.
-      window.open(DOWNLOAD_URL, '_blank', 'noopener,noreferrer');
-    }
+    // Create a hidden anchor and programmatically click it.
+    // This forces the browser's own download manager to handle the file —
+    // bypassing Android's intent resolver / Gmail share-sheet entirely.
+    const a = document.createElement('a');
+    a.href = DOWNLOAD_URL;
+    a.setAttribute('download', 'Pride.apk'); // hint filename to browser
+    a.style.display = 'none';
+    document.body.appendChild(a);
+    a.click();
+    // Clean up after a short delay
+    setTimeout(() => document.body.removeChild(a), 1000);
   };
 
   return (
