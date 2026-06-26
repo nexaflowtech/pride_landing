@@ -9,7 +9,7 @@ import { faGooglePlay } from '@fortawesome/free-brands-svg-icons';
 import { X, ShieldCheck } from 'lucide-react';
 
 const DOWNLOAD_URL =
-  'https://drive.google.com/uc?export=download&id=1sD3gs3iEPt-Chvkk0JtbAYO7Yy84NaPk&confirm=t';
+  'https://play.google.com/store/apps/details?id=com.nexaflowtech.pride';
 
 interface DownloadModalProps {
   isOpen: boolean;
@@ -19,18 +19,8 @@ interface DownloadModalProps {
 export default function DownloadModal({ isOpen, onClose }: DownloadModalProps) {
   const handleDownload = () => {
     onClose();
-
-    // Create a hidden anchor and programmatically click it.
-    // This forces the browser's own download manager to handle the file —
-    // bypassing Android's intent resolver / Gmail share-sheet entirely.
-    const a = document.createElement('a');
-    a.href = DOWNLOAD_URL;
-    a.setAttribute('download', 'Pride.apk'); // hint filename to browser
-    a.style.display = 'none';
-    document.body.appendChild(a);
-    a.click();
-    // Clean up after a short delay
-    setTimeout(() => document.body.removeChild(a), 1000);
+    // Open the Google Play Store listing in a new tab
+    window.open(DOWNLOAD_URL, '_blank', 'noopener,noreferrer');
   };
 
   return (
@@ -113,10 +103,10 @@ export default function DownloadModal({ isOpen, onClose }: DownloadModalProps) {
               style={{ background: 'rgba(255,255,255,0.04)' }}
             >
               <p className="font-sans text-[13px] text-brand-on-surface-variant text-center leading-relaxed">
-                <span className="font-bold text-white">Pride is 100% safe and secure.</span>{' '}
-                You've been granted exclusive Priority Access to our Closed Testing program and are among the{' '}
-                <span className="text-brand-primary font-semibold">first users</span>{' '}
-                to experience the app before its public launch.
+                <span className="font-bold text-white">Pride is now live on Google Play! 🎉</span>{' '}
+                Download the app directly from the Play Store and join our{' '}
+                <span className="text-brand-primary font-semibold">growing community</span>{' '}
+                of LGBTQ+ people connecting, sharing, and thriving together.
               </p>
             </div>
 
@@ -132,7 +122,7 @@ export default function DownloadModal({ isOpen, onClose }: DownloadModalProps) {
                 }}
               >
                 <FontAwesomeIcon icon={faGooglePlay} className="w-5 h-5" />
-                Download Pride Now
+                Get it on Google Play
               </button>
 
               <button
